@@ -91,6 +91,7 @@ namespace PDFSynthesizer
                     synthesizablePDF.ResetSpeed();
                     break;
             }
+            ReadFromCursor();
             btnResetSpeed.Text = synthesizablePDF.SpeakRate.ToString();
         }
 
@@ -101,15 +102,20 @@ namespace PDFSynthesizer
                 openFileDialog1.FileName = @"D:\My Documents\Military Stuff\SNCOA Course 14 - Distance\Self Awareness\SA04 Critical Thinking.pdf";
             }
             DialogResult result = openFileDialog1.ShowDialog(); // Show the dialog.
-            this.Focus();
-            if (result != DialogResult.OK)
+
+            if (result != DialogResult.OK && synthesizablePDF == null)
             {
-                return;
+                this.Close();
             }
+
+            this.Focus();
+
+            if (result != DialogResult.OK) { return; }
+
             txtPDFFilePath.Text = openFileDialog1.FileName;
 
             if (synthesizablePDF != null) { synthesizablePDF.Dispose(); }
-            synthesizablePDF = new SynthesizablePDF(txtPDFFilePath.Text);
+            synthesizablePDF = new SynthesizablePDF(txtPDFFilePath.Text); //, PromptBreak.ExtraSmall);
             //
             lblTotalPages.Text = "# Pages Total: " + synthesizablePDF.NumberOfPages;
             lbxPages.DataSource = synthesizablePDF.Pages;

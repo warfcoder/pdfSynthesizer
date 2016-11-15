@@ -25,6 +25,7 @@ namespace PDFSynthesizer
         public int NumberOfPages { get; private set; }
         public SpeechSynthesizer SpeechSynthesizer { get; private set; }
         public int SpeakRate { get { return SpeechSynthesizer.Rate; } }
+        //public PromptBreak CurrentPromptBreak { get; set; }
         public int ReadingStartPosition { get; set; }
         public int CurrentPageNumber
         {
@@ -44,10 +45,11 @@ namespace PDFSynthesizer
             this.Pages = new List<string>();
         }
 
-        public SynthesizablePDF(string pdfFilePath)
+        public SynthesizablePDF(string pdfFilePath) //, PromptBreak promptBreak = PromptBreak.None)
             : this()
         {
             this.pdfFilePath = pdfFilePath;
+            //this.CurrentPromptBreak = promptBreak;
             if (!File.Exists(pdfFilePath)) { throw new FileLoadException("File '%0' not found", pdfFilePath); }
 
             var pdfReader = new PdfReader(pdfFilePath);
@@ -67,6 +69,7 @@ namespace PDFSynthesizer
                 var currentText = PdfTextExtractor.GetTextFromPage(pdfReader, page, strategy)
                     .Replace("(s)", "s")
                     .Replace("-\n", string.Empty);
+
                 var filteredTest = new Regex("_+").Replace(currentText, " [fill-in-the-blank] ");
                 //var utf8Text= Encoding.UTF8.GetString(ASCIIEncoding.Convert(
                 //    Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentText)));
@@ -88,6 +91,7 @@ namespace PDFSynthesizer
             }
             File.WriteAllText(outputTextFilePath, this.GetCurrentPage());
         }
+
         internal string GetCurrentPage()
         {
             return this.Pages[CurrentPageNumber - 1];
@@ -97,10 +101,21 @@ namespace PDFSynthesizer
         {
             this.CancelSpeaking();
             this.ReadingStartPosition = 0;
-
             this.SpeechSynthesizer.SpeakAsync(this.GetCurrentPage());
             //OutPutFile();
         }
+
+        //public Prompt AddPromptBreaksToSpaces(string text)
+        //{
+        //    var promptBuilder = new PromptBuilder();
+        //    foreach (var word in text.Split(' '))
+        //    {
+        //        promptBuilder.AppendText(word + " ");
+        //        promptBuilder.AppendBreak(this.CurrentPromptBreak);
+        //    }
+
+        //    return new Prompt(promptBuilder);
+        //}
 
         private void CancelSpeaking()
         {
@@ -142,7 +157,6 @@ namespace PDFSynthesizer
             SpeechSynthesizer.Dispose();
         }
 
-
         public void ExportToWave(string filePath)
         {
             // Initialize a new instance of the SpeechSynthesizer.
@@ -182,7 +196,7 @@ namespace PDFSynthesizer
                         var ms = new MemoryStream();
                         synthesizer.SetOutputToWaveStream(ms);
                         synthesizer.Speak(page);
-                        FileStream fs = File.OpenWrite(filePath + (this.Pages.IndexOf(page)+1) + ".wav");
+                        FileStream fs = File.OpenWrite(filePath + (this.Pages.IndexOf(page) + 1) + ".wav");
                         byte[] data = ms.ToArray();
                         fs.Write(data, 0, data.Length);
                         fs.Close();
@@ -191,5 +205,6 @@ namespace PDFSynthesizer
                 });
             }
         }
+
     }
 }

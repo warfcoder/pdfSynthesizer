@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFSynthesizer", "PDFSynthesizer\PDFSynthesizer.csproj", "{ADC447A3-5B6A-4C74-B18B-3076F71BFFC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateZip", "CreateZip\CreateZip.csproj", "{CDCB6347-3BA9-4BB5-9558-CCC15B02205D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{ADC447A3-5B6A-4C74-B18B-3076F71BFFC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADC447A3-5B6A-4C74-B18B-3076F71BFFC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADC447A3-5B6A-4C74-B18B-3076F71BFFC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDCB6347-3BA9-4BB5-9558-CCC15B02205D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDCB6347-3BA9-4BB5-9558-CCC15B02205D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDCB6347-3BA9-4BB5-9558-CCC15B02205D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDCB6347-3BA9-4BB5-9558-CCC15B02205D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
